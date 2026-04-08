@@ -3,7 +3,17 @@ const chatForm = document.getElementById('chatForm');
 const userInput = document.getElementById('userInput');
 const responseContainer = document.getElementById('response');
 
-async function main() {
+// Add an event listener to handle form submission
+chatForm.addEventListener('submit', async (event) => {
+  // Prevent the page from refreshing when the form is submitted
+  event.preventDefault();
+  
+  // Get the user's input text
+  const userMessage = userInput.value;
+  
+  // Clear the input field for the next message
+  userInput.value = '';
+  
   // Send a POST request to the OpenAI API
   const response = await fetch('https://api.openai.com/v1/chat/completions', {
     method: 'POST', // We are POST-ing data to the API
@@ -19,14 +29,15 @@ async function main() {
 
         If a user's query is unrelated to budget travel, respond by stating that you do not know.`},
         
-        { role: 'user', content: 'What are some cheap ways to travel around Europe?'}
+        { role: 'user', content: userMessage }
       ]
     })
   });
+  
   // Parse and store the response data
   const result = await response.json();
-  // Log result to the console
-  console.log(result.choices[0].message.content);
-};
-
-main();
+  
+  // Display the AI's response on the page
+  const aiResponse = result.choices[0].message.content;
+  responseContainer.textContent = aiResponse;
+});
