@@ -17,6 +17,9 @@ chatForm.addEventListener('submit', async (event) => {
   // Clear the input field for the next message
   userInput.value = '';
   
+  // Show a waiting message while the AI is responding
+  responseContainer.textContent = 'Thinking...';
+  
   // Add the user's message to the conversation history
   conversationHistory.push({ role: 'user', content: userMessage });
   
